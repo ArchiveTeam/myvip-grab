@@ -59,7 +59,7 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = "20160117.01"
+VERSION = "20160605.01"
 USER_AGENT = 'ArchiveTeam'
 TRACKER_ID = 'myvip'
 TRACKER_HOST = 'tracker.archiveteam.org'
@@ -210,6 +210,9 @@ class WgetArgs(object):
                 wget_args.append(url)
             for url in ['http://myvip.com/profile.php?act=getclubs&page=0&uid={0}{1}{2}'.format(item_value, a, b) for a in suffixes for b in suffixes]:
                 wget_args.append(url)
+        elif item_type == 'user':
+            wget_args.append('http://myvip.com/profile.php?uid=' + item_value)
+            wget_args.append('http://myvip.com/profile.php?act=getclubs&page=0&uid=' + item_value)
         else:
             raise Exception('Unknown item')
         

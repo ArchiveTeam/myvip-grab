@@ -32,7 +32,7 @@ wget.callbacks.download_child_p = function(urlpos, parent, depth, start_url_pars
   local url = urlpos["url"]["url"]
   local html = urlpos["link_expect_html"]
   
-  if (downloaded[url] ~= true and addedtolist[url] ~= true) and string.match(url, "^https?://[^/]*myvip%.com") and ((string.match(url, "[^0-9]"..item_value.."[0-9][0-9]") and not string.match(url, "[^0-9]"..item_value.."[0-9][0-9][0-9]")) or string.match(url, "pager=") or string.match(url, "^https?://avatar[0-9]*%.myvip%.com") or string.match(url, "^https?://image[0-9]*%.myvip%.com") or string.match(url, "^https?://thumbs%.myvip%.com") or html == 0) then
+  if (downloaded[url] ~= true and addedtolist[url] ~= true) and string.match(url, "^https?://[^/]*myvip%.com") and ((item_type == "100users" and string.match(url, "[^0-9]"..item_value.."[0-9][0-9]") and not string.match(url, "[^0-9]"..item_value.."[0-9][0-9][0-9]")) or (item_type == "user" and string.match(url, "[^0-9]"..item_value) and not string.match(url, "[^0-9]"..item_value.."[0-9]")) or string.match(url, "pager=") or string.match(url, "^https?://avatar[0-9]*%.myvip%.com") or string.match(url, "^https?://image[0-9]*%.myvip%.com") or string.match(url, "^https?://thumbs%.myvip%.com") or html == 0) then
     if string.match(url, "^https?://avatar[0-9]*%.myvip%.com") then
       userpics[url] = true
       return false
@@ -54,7 +54,7 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
   
   local function check(urla)
     local url = string.match(urla, "^([^#]+)")
-    if (downloaded[url] ~= true and addedtolist[url] ~= true) and string.match(url, "^https?://[^/]*myvip%.com") and ((string.match(url, "[^0-9]"..item_value.."[0-9][0-9]") and not string.match(url, "[^0-9]"..item_value.."[0-9][0-9][0-9]")) or string.match(url, "pager=") or string.match(url, "^https?://avatar[0-9]*%.myvip%.com") or string.match(url, "^https?://image[0-9]*%.myvip%.com") or string.match(url, "^https?://thumbs%.myvip%.com")) then
+    if (downloaded[url] ~= true and addedtolist[url] ~= true) and string.match(url, "^https?://[^/]*myvip%.com") and ((item_type == "100users" and string.match(url, "[^0-9]"..item_value.."[0-9][0-9]") and not string.match(url, "[^0-9]"..item_value.."[0-9][0-9][0-9]")) or (item_type == "user" and string.match(url, "[^0-9]"..item_value) and not string.match(url, "[^0-9]"..item_value.."[0-9]")) or string.match(url, "pager=") or string.match(url, "^https?://avatar[0-9]*%.myvip%.com") or string.match(url, "^https?://image[0-9]*%.myvip%.com") or string.match(url, "^https?://thumbs%.myvip%.com")) then
       if string.match(url, "^https?://avatar[0-9]*%.myvip%.com") then
         userpics[url] = true
       elseif string.match(url, "&amp;") then
@@ -84,7 +84,7 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
     end
   end
   
-  if item_type == '100users' and string.match(url, "^https?://[^/]*myvip%.com") and not (string.match(url, "^https?://avatar[0-9]*%.myvip%.com") or string.match(url, "^https?://image[0-9]*%.myvip%.com") or string.match(url, "^https?://thumbs%.myvip%.com")) then
+  if (item_type == '100users' or item_type == 'user') and string.match(url, "^https?://[^/]*myvip%.com") and not (string.match(url, "^https?://avatar[0-9]*%.myvip%.com") or string.match(url, "^https?://image[0-9]*%.myvip%.com") or string.match(url, "^https?://thumbs%.myvip%.com")) then
     html = read_file(file)
     for newurl in string.gmatch(html, '([^"]+)') do
       checknewurl(newurl)
@@ -120,7 +120,7 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
         abortproject = true
       end
     end
-    if string.match(url, "^https?://[^/]*myvip%.com/profile%.php%?act=getclubs&page=[0-9]+&uid="..item_value.."[0-9][0-9]$") and string.match(html, "list%-row%-card") then
+    if ((item_type == "100users" and string.match(url, "^https?://[^/]*myvip%.com/profile%.php%?act=getclubs&page=[0-9]+&uid="..item_value.."[0-9][0-9]$")) or (item_type == "user" and string.match(url, "^https?://[^/]*myvip%.com/profile%.php%?act=getclubs&page=[0-9]+&uid="..item_value.."$"))) and string.match(html, "list%-row%-card") then
       currentpage = string.match(url, "page=([0-9]+)")
       currentid = string.match(url, "uid=([0-9]+)")
       check("http://myvip.com/profile.php?act=getclubs&page=".. currentpage+1 .."&uid=".. currentid)
