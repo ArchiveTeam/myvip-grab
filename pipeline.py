@@ -59,7 +59,7 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = "20160729.01"
+VERSION = "20160730.01"
 USER_AGENT = 'ArchiveTeam'
 TRACKER_ID = 'myvip'
 TRACKER_HOST = 'tracker.archiveteam.org'
@@ -215,6 +215,8 @@ class WgetArgs(object):
             wget_args.append('http://myvip.com/profile.php?act=getclubs&page=0&uid=' + item_value)
         else:
             raise Exception('Unknown item')
+        
+        time.sleep(3)
         
         myviplogin = requests.get('http://myvip.com/index.php')
         if not myviplogin.status_code == 200:
