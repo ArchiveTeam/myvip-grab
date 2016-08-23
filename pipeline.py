@@ -213,7 +213,6 @@ class WgetArgs(object):
         elif item_type == 'user':
             wget_args.append('http://myvip.com/profile.php?uid=' + item_value)
             wget_args.append('http://myvip.com/images.php?uid=' + item_value)
-            wget_args.append('http://myvip.com/search.php?act=dousercontacts&uid=' + item_value)
             wget_args.append('http://myvip.com/profile.php?act=getclubs&page=0&uid=' + item_value)
         else:
             raise Exception('Unknown item')
