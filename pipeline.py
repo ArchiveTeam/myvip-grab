@@ -38,7 +38,7 @@ if StrictVersion(seesaw.__version__) < StrictVersion("0.8.5"):
 # 2. prints the required version string
 WGET_LUA = find_executable(
     "Wget+Lua",
-    ["GNU Wget 1.14.lua.20130523-9a5c", "GNU Wget 1.14.lua.20160530-955376b"],
+    ["GNU Wget 1.14.lua.20130523-9a5c"],
     [
         "./wget-lua",
         "./wget-lua-warrior",
@@ -59,7 +59,7 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = "20160730.01"
+VERSION = "20160823.01"
 USER_AGENT = 'ArchiveTeam'
 TRACKER_ID = 'myvip'
 TRACKER_HOST = 'tracker.archiveteam.org'
@@ -212,12 +212,14 @@ class WgetArgs(object):
                 wget_args.append(url)
         elif item_type == 'user':
             wget_args.append('http://myvip.com/profile.php?uid=' + item_value)
+            wget_args.append('http://myvip.com/images.php?uid=' + item_value)
+            wget_args.append('http://myvip.com/search.php?act=dousercontacts&uid=' + item_value)
             wget_args.append('http://myvip.com/profile.php?act=getclubs&page=0&uid=' + item_value)
         else:
             raise Exception('Unknown item')
         
-        time.sleep(3)
-        
+        #time.sleep(3)
+
         myviplogin = requests.get('http://myvip.com/index.php')
         if not myviplogin.status_code == 200:
             raise Exception('Something went wrong while connection to MyVIP.')
