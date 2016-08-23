@@ -38,7 +38,7 @@ if StrictVersion(seesaw.__version__) < StrictVersion("0.8.5"):
 # 2. prints the required version string
 WGET_LUA = find_executable(
     "Wget+Lua",
-    ["GNU Wget 1.14.lua.20130523-9a5c"],
+    ["GNU Wget 1.14.lua.20130523-9a5c", "GNU Wget 1.14.lua.20160530-955376b"],
     [
         "./wget-lua",
         "./wget-lua-warrior",
@@ -218,7 +218,7 @@ class WgetArgs(object):
         else:
             raise Exception('Unknown item')
         
-        #time.sleep(3)
+        time.sleep(3)
 
         myviplogin = requests.get('http://myvip.com/index.php')
         if not myviplogin.status_code == 200:
