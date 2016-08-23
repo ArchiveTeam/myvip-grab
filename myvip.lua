@@ -168,7 +168,7 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
     return wget.actions.ABORT
   end
 
-  if (status_code >= 200 and status_code <= 399) then
+  if (status_code >= 200 and status_code <= 399) or (status_code == 500 and string.match(url["url"], "^https?://[^/]*myvip%.com/profile%.php%?uid=")) then
     if string.match(url.url, "https://") then
       local newurl = string.gsub(url.url, "https://", "http://")
       downloaded[newurl] = true
@@ -177,7 +177,7 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
     end
   end
   
-  if status_code >= 500 or
+  if status_code > 500 or (status_code == 500 and not string.match(url["url"], "^https?://[^/]*myvip%.com/profile%.php%?uid=")) or
     (status_code >= 400 and status_code ~= 404) then
     io.stdout:write("Server returned "..http_stat.statcode.." ("..err.."). Sleeping.\n")
     io.stdout:flush()
